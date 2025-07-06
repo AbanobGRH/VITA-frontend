@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="form-group">
                         <label>Condition</label>
-                        <input type="text" placeholder="e.g., Blood Pressure" class="form-input">
                     </div>
                     <div class="form-group">
                         <label>Instructions</label>
@@ -107,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = modalOverlay.querySelector('input[placeholder*="Lisinopril"]').value;
             const dosage = modalOverlay.querySelector('input[placeholder*="10mg"]').value;
             const frequency = modalOverlay.querySelector('select').value;
-            const condition = modalOverlay.querySelector('input[placeholder*="Blood Pressure"]').value;
 
             if (name && dosage) {
                 addNewMedication(name, dosage, frequency, condition);
@@ -132,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const newMedication = document.createElement('div');
         newMedication.className = 'medication-item';
         
-        const conditionClass = condition.toLowerCase().includes('blood') ? 'blood-pressure' : 
                               condition.toLowerCase().includes('diabetes') ? 'glucose' : 'cholesterol';
         
         newMedication.innerHTML = `
@@ -384,10 +381,7 @@ const medicationStyles = `
         flex-shrink: 0;
     }
 
-    .medication-icon.blood-pressure {
-        background: rgba(74, 144, 226, 0.1);
-        color: var(--vita-blue);
-    }
+
 
     .medication-icon.glucose {
         background: var(--orange-50);

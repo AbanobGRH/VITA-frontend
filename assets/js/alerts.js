@@ -331,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function simulateNewAlert() {
         const alertTypes = [
             { type: 'Medication', message: 'Evening medication reminder', priority: 'medium' },
-            { type: 'Health', message: 'Blood pressure reading recommended', priority: 'low' },
             { type: 'Device', message: 'Device sync completed', priority: 'low' }
         ];
         

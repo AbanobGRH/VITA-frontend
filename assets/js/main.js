@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Simulate real-time data updates
     function updateMetrics() {
         const heartRate = document.querySelector('.metric-card:nth-child(1) .metric-value');
-        const bloodPressure = document.querySelector('.metric-card:nth-child(2) .metric-value');
         const oxygen = document.querySelector('.metric-card:nth-child(3) .metric-value');
         const glucose = document.querySelector('.metric-card:nth-child(4) .metric-value');
 
@@ -67,12 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             heartRate.innerHTML = `${newHeartRate} <span class="metric-unit">bpm</span>`;
         }
 
-        if (bloodPressure) {
-            // Simulate blood pressure variation
-            const systolic = Math.floor(Math.random() * 10) + 115;
-            const diastolic = Math.floor(Math.random() * 8) + 75;
-            bloodPressure.innerHTML = `${systolic}/${diastolic} <span class="metric-unit">mmHg</span>`;
-        }
+  
 
         if (oxygen) {
             // Simulate SpO2 variation (96-99%)

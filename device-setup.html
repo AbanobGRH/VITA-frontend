@@ -15,9 +15,7 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    </svg>
+                    <img style="width: 40px; "src="/assets/justlogo.png">
                     <span class="logo-text">VITA</span>
                 </div>
                 <button class="sidebar-close" id="sidebarClose">
@@ -89,10 +87,7 @@
                 </svg>
             </button>
             <div class="mobile-logo">
-                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-                <span class="logo-text">VITA</span>
+                <img style="width: 40px; "src="/assets/justlogo.png">                <span class="logo-text">VITA</span>
             </div>
         </header>
 
@@ -108,8 +103,6 @@
                 <div class="card-header">
                     <h2>Device Status</h2>
                     <div class="status-indicator online">
-                        <div class="status-dot"></div>
-                        <span>All Devices Connected</span>
                     </div>
                 </div>
                 
@@ -123,8 +116,8 @@
                             </svg>
                         </div>
                         <div class="device-info">
-                            <h3>VITA Watch Pro</h3>
-                            <p>Primary monitoring device</p>
+                            <h3>VITA Watch Pro(NICKNAME)</h3>
+                            <p>SERIAL NO</p>
                             <span class="device-status connected">Connected</span>
                         </div>
                         <div class="device-battery">
@@ -136,67 +129,17 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="device-card connected">
-                        <div class="device-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                                <line x1="12" y1="19" x2="12" y2="23"></line>
-                                <line x1="8" y1="23" x2="16" y2="23"></line>
-                            </svg>
-                        </div>
-                        <div class="device-info">
-                            <h3>Blood Pressure Monitor</h3>
-                            <p>Automatic BP readings</p>
-                            <span class="device-status connected">Connected</span>
-                        </div>
-                        <div class="device-battery">
-                            <div class="battery-indicator">
-                                <div class="battery-bar">
-                                    <div class="battery-fill" style="width: 65%"></div>
-                                </div>
-                                <span>65%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="device-card connected">
-                        <div class="device-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14,2 14,8 20,8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                            </svg>
-                        </div>
-                        <div class="device-info">
-                            <h3>Glucose Meter</h3>
-                            <p>Blood glucose monitoring</p>
-                            <span class="device-status connected">Connected</span>
-                        </div>
-                        <div class="device-battery">
-                            <div class="battery-indicator">
-                                <div class="battery-bar">
-                                    <div class="battery-fill" style="width: 92%"></div>
-                                </div>
-                                <span>92%</span>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="device-card disconnected">
                         <div class="device-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-                                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-                                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-                                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
                             </svg>
                         </div>
                         <div class="device-info">
-                            <h3>Emergency Button</h3>
-                            <p>Wearable emergency alert</p>
+                            <h3>VITA Watch Pro (NICKNAME)</h3>
+                            <p>SERIAL NO</p>
                             <span class="device-status disconnected">Setup Required</span>
                         </div>
                         <button class="setup-btn">Setup Device</button>
@@ -204,63 +147,7 @@
                 </div>
             </div>
 
-            <!-- Device Configuration and Troubleshooting -->
-            <div class="dashboard-grid">
-                <!-- Device Configuration -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Device Configuration</h2>
-                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                    </div>
-                    
-                    <div class="config-list">
-                        <div class="config-item">
-                            <div class="config-info">
-                                <h3>Measurement Frequency</h3>
-                                <p>How often devices take readings</p>
-                            </div>
-                            <select class="config-select">
-                                <option>Every 15 minutes</option>
-                                <option selected>Every 30 minutes</option>
-                                <option>Every hour</option>
-                                <option>Manual only</option>
-                            </select>
-                        </div>
 
-                        <div class="config-item">
-                            <div class="config-info">
-                                <h3>Alert Thresholds</h3>
-                                <p>Customize when to receive alerts</p>
-                            </div>
-                            <button class="config-btn">Configure</button>
-                        </div>
-
-                        <div class="config-item">
-                            <div class="config-info">
-                                <h3>Data Sync</h3>
-                                <p>Automatic cloud synchronization</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="config-item">
-                            <div class="config-info">
-                                <h3>Power Saving Mode</h3>
-                                <p>Extend battery life when needed</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Troubleshooting -->
                 <div class="card">
@@ -302,8 +189,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+<br>
             <!-- Device Setup Wizard -->
             <div class="card">
                 <div class="card-header">
@@ -318,83 +204,51 @@
                     <div class="wizard-steps">
                         <div class="step active">
                             <div class="step-number">1</div>
-                            <span>Select Device</span>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
+
                             <span>Pair Device</span>
                         </div>
                         <div class="step">
-                            <div class="step-number">3</div>
+                            <div class="step-number">2</div>
                             <span>Configure</span>
                         </div>
                         <div class="step">
-                            <div class="step-number">4</div>
+                            <div class="step-number">3</div>
                             <span>Test</span>
                         </div>
                     </div>
+<style>.pair-device-form {
+    padding: 1rem;
+}
 
-                    <div class="device-selection">
-                        <h3>Select Device Type</h3>
-                        <div class="device-types">
-                            <div class="device-type-card">
-                                <div class="device-type-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                        <line x1="8" y1="21" x2="16" y2="21"></line>
-                                        <line x1="12" y1="17" x2="12" y2="21"></line>
-                                    </svg>
-                                </div>
-                                <h4>Smart Watch</h4>
-                                <p>Heart rate, activity tracking</p>
-                                <button class="select-device-btn">Select</button>
-                            </div>
+.pair-device-form input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
 
-                            <div class="device-type-card">
-                                <div class="device-type-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                                        <line x1="12" y1="19" x2="12" y2="23"></line>
-                                        <line x1="8" y1="23" x2="16" y2="23"></line>
-                                    </svg>
-                                </div>
-                                <h4>Blood Pressure Monitor</h4>
-                                <p>Automatic BP measurements</p>
-                                <button class="select-device-btn">Select</button>
-                            </div>
+.pair-device-form button {
+    font-size: 1rem;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+</style>
+           <!-- Device Pairing -->
+        <h2>Pair New Device</h2>
+    <div class="pair-device-form">
+        <h3>Enter Device Serial Number</h3>
+        <p>Please enter the serial number found on your device to begin pairing.</p>
+        <form id="pairDeviceForm">
+            <input type="text" id="serialNumber" name="serialNumber" placeholder="e.g. VITA-1234-5678" required>
+            <button type="submit" class="setup-btn">Next</button>
+        </form>
 
-                            <div class="device-type-card">
-                                <div class="device-type-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                        <polyline points="14,2 14,8 20,8"></polyline>
-                                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    </svg>
-                                </div>
-                                <h4>Glucose Meter</h4>
-                                <p>Blood sugar monitoring</p>
-                                <button class="select-device-btn">Select</button>
-                            </div>
-
-                            <div class="device-type-card">
-                                <div class="device-type-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                        <line x1="12" y1="9" x2="12" y2="13"></line>
-                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                    </svg>
-                                </div>
-                                <h4>Emergency Button</h4>
-                                <p>Wearable panic button</p>
-                                <button class="select-device-btn">Select</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-
+</div><br>
             <!-- Support & Documentation -->
             <div class="card">
                 <div class="card-header">

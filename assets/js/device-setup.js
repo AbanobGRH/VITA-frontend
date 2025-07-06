@@ -298,7 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     
                     <div class="threshold-section">
-                        <h4>Blood Pressure</h4>
                         <div class="threshold-inputs">
                             <div class="form-group">
                                 <label>Systolic High (mmHg)</label>

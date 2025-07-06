@@ -42,25 +42,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const metrics = {
             day: {
                 heartRate: { current: 72, average: 74 },
-                bloodPressure: { current: '120/80', average: '122/81' },
                 oxygen: { current: 98, average: 97 },
                 glucose: { current: 95, average: 96 }
             },
             week: {
                 heartRate: { current: 72, average: 75 },
-                bloodPressure: { current: '120/80', average: '125/82' },
                 oxygen: { current: 98, average: 97 },
                 glucose: { current: 95, average: 98 }
             },
             month: {
                 heartRate: { current: 72, average: 76 },
-                bloodPressure: { current: '120/80', average: '128/84' },
                 oxygen: { current: 98, average: 96 },
                 glucose: { current: 95, average: 102 }
             },
             year: {
                 heartRate: { current: 72, average: 78 },
-                bloodPressure: { current: '120/80', average: '132/86' },
                 oxygen: { current: 98, average: 96 },
                 glucose: { current: 95, average: 105 }
             }
@@ -72,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const averageElements = document.querySelectorAll('.metric-average');
         if (averageElements.length >= 4) {
             averageElements[0].textContent = `Avg: ${data.heartRate.average} bpm`;
-            averageElements[1].textContent = `Avg: ${data.bloodPressure.average} mmHg`;
             averageElements[2].textContent = `Avg: ${data.oxygen.average}%`;
             averageElements[3].textContent = `Avg: ${data.glucose.average} mg/dL`;
         }
@@ -87,11 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const heartRate = Math.floor(Math.random() * 9) + 68;
             metrics[0].innerHTML = `${heartRate} <span class="metric-unit">bpm</span>`;
             
-            // Blood pressure
-            const systolic = Math.floor(Math.random() * 10) + 115;
-            const diastolic = Math.floor(Math.random() * 8) + 75;
-            metrics[1].innerHTML = `${systolic}/${diastolic} <span class="metric-unit">mmHg</span>`;
-            
+
             // SpO2 (96-99%)
             const oxygen = Math.floor(Math.random() * 4) + 96;
             metrics[2].innerHTML = `${oxygen} <span class="metric-unit">%</span>`;
