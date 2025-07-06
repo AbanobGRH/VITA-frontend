@@ -1,3 +1,67 @@
+<?php
+/**
+ * VITA Health Platform - Health Metrics
+ */
+
+require_once 'includes/db_functions.php';
+
+// Get current user and data
+$user_id = getCurrentUserId();
+$user = getCurrentUser();
+$db = VitaDB::getInstance();
+
+// Get period from URL parameter
+$period = $_GET['period'] ?? 'week';
+$valid_periods = ['day', 'week', 'month', 'year'];
+if (!in_array($period, $valid_periods)) {
+    $period = 'week';
+}
+
+// Get health metrics data
+$metrics = $db->getHealthMetricsByPeriod($user_id, $period, 100);
+$latest_metrics = $db->getLatestHealthMetrics($user_id);
+
+// Calculate averages
+$averages = [
+    'heart_rate' => 0,
+    'blood_oxygen' => 0,
+    'blood_glucose' => 0
+];
+
+if (!empty($metrics)) {
+    $totals = ['heart_rate' => 0, 'blood_oxygen' => 0, 'blood_glucose' => 0];
+    $counts = ['heart_rate' => 0, 'blood_oxygen' => 0, 'blood_glucose' => 0];
+    
+    foreach ($metrics as $metric) {
+        if ($metric['heart_rate']) {
+            $totals['heart_rate'] += $metric['heart_rate'];
+            $counts['heart_rate']++;
+        }
+        if ($metric['blood_oxygen']) {
+            $totals['blood_oxygen'] += $metric['blood_oxygen'];
+            $counts['blood_oxygen']++;
+        }
+        if ($metric['blood_glucose']) {
+            $totals['blood_glucose'] += $metric['blood_glucose'];
+            $counts['blood_glucose']++;
+        }
+    }
+    
+    foreach ($averages as $key => &$avg) {
+        if ($counts[$key] > 0) {
+            $avg = round($totals[$key] / $counts[$key]);
+        }
+    }
+}
+
+// Current values
+$current_heart_rate = $latest_metrics['heart_rate'] ?? 72;
+$current_oxygen = $latest_metrics['blood_oxygen'] ?? 98;
+$current_glucose = $latest_metrics['blood_glucose'] ?? 95;
+
+// Recent readings for display
+$recent_readings = array_slice($metrics, 0, 10);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +79,7 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <img style="width: 40px; "src="/assets/justlogo.png">
+                    <img style="width: 40px;" src="/assets/justlogo.png">
                     <span class="logo-text">VITA</span>
                 </div>
                 <button class="sidebar-close" id="sidebarClose">
@@ -26,33 +90,33 @@
                 </button>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">
+                <li><a href="index.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
                     </svg>
                     Dashboard
                 </a></li>
-                <li><a href="health-metrics.html" class="nav-link active">
+                <li><a href="health-metrics.php" class="nav-link active">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>
                     Health Metrics
                 </a></li>
-                <li><a href="location.html" class="nav-link">
+                <li><a href="location.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
                     Location
                 </a></li>
-                <li><a href="medication.html" class="nav-link">
+                <li><a href="medication.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4.5 16.5c-1.5 1.5-1.5 3.5 0 5s3.5 1.5 5 0l12-12c1.5-1.5 1.5-3.5 0-5s-3.5-1.5-5 0l-12 12z"></path>
                         <path d="M15 7l3 3"></path>
                     </svg>
                     Medication
                 </a></li>
-                <li><a href="alerts.html" class="nav-link">
+                <li><a href="alerts.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                         <line x1="12" y1="9" x2="12" y2="13"></line>
@@ -60,14 +124,14 @@
                     </svg>
                     Alerts
                 </a></li>
-                <li><a href="profile.html" class="nav-link">
+                <li><a href="profile.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     Profile
                 </a></li>
-                <li><a href="device-setup.html" class="nav-link">
+                <li><a href="device-setup.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"></circle>
                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -87,7 +151,8 @@
                 </svg>
             </button>
             <div class="mobile-logo">
-                <img style="width: 40px; "src="/assets/justlogo.png">                <span class="logo-text">VITA</span>
+                <img style="width: 40px;" src="/assets/justlogo.png">
+                <span class="logo-text">VITA</span>
             </div>
         </header>
 
@@ -100,10 +165,10 @@
 
             <!-- Time Period Selector -->
             <div class="period-selector">
-                <button class="period-btn" data-period="day">Day</button>
-                <button class="period-btn active" data-period="week">Week</button>
-                <button class="period-btn" data-period="month">Month</button>
-                <button class="period-btn" data-period="year">Year</button>
+                <a href="?period=day" class="period-btn <?php echo $period === 'day' ? 'active' : ''; ?>">Day</a>
+                <a href="?period=week" class="period-btn <?php echo $period === 'week' ? 'active' : ''; ?>">Week</a>
+                <a href="?period=month" class="period-btn <?php echo $period === 'month' ? 'active' : ''; ?>">Month</a>
+                <a href="?period=year" class="period-btn <?php echo $period === 'year' ? 'active' : ''; ?>">Year</a>
             </div>
 
             <!-- Metrics Overview -->
@@ -112,9 +177,9 @@
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Heart Rate</p>
-                            <p class="metric-value">72 <span class="metric-unit">bpm</span></p>
+                            <p class="metric-value"><?php echo $current_heart_rate; ?> <span class="metric-unit">bpm</span></p>
                             <p class="metric-status normal">● Stable</p>
-                            <p class="metric-average">Avg: 75 bpm</p>
+                            <p class="metric-average">Avg: <?php echo $averages['heart_rate'] ?: 75; ?> bpm</p>
                         </div>
                         <div class="metric-icon heart">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -124,15 +189,13 @@
                     </div>
                 </div>
 
-      
-
                 <div class="metric-card">
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Blood Oxygen (SpO2)</p>
-                            <p class="metric-value">98 <span class="metric-unit">%</span></p>
+                            <p class="metric-value"><?php echo $current_oxygen; ?> <span class="metric-unit">%</span></p>
                             <p class="metric-status improving">● Improving</p>
-                            <p class="metric-average">Avg: 97%</p>
+                            <p class="metric-average">Avg: <?php echo $averages['blood_oxygen'] ?: 97; ?>%</p>
                         </div>
                         <div class="metric-icon oxygen">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -150,9 +213,9 @@
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Blood Glucose</p>
-                            <p class="metric-value">95 <span class="metric-unit">mg/dL</span></p>
+                            <p class="metric-value"><?php echo $current_glucose; ?> <span class="metric-unit">mg/dL</span></p>
                             <p class="metric-status normal">● Stable <span class="beta-tag">BETA</span></p>
-                            <p class="metric-average">Avg: 98 mg/dL</p>
+                            <p class="metric-average">Avg: <?php echo $averages['blood_glucose'] ?: 98; ?> mg/dL</p>
                         </div>
                         <div class="metric-icon glucose">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -204,71 +267,48 @@
                         </svg>
                     </div>
                     <div class="readings-list">
-                        <div class="reading-item">
-                            <div class="reading-header">
-                                <span class="reading-time">2:30 PM</span>
-                                <span class="reading-date">Today</span>
-                            </div>
-                            <div class="reading-metrics">
-                                <div class="reading-metric">
-                                    <span class="metric-name">HR:</span>
-                                    <span class="metric-val">68 bpm</span>
+                        <?php if (empty($recent_readings)): ?>
+                            <div class="reading-item">
+                                <div class="reading-header">
+                                    <span class="reading-time">No Data</span>
+                                    <span class="reading-date">Available</span>
                                 </div>
-                              
-                                <div class="reading-metric">
-                                    <span class="metric-name">SpO2:</span>
-                                    <span class="metric-val">98%</span>
-                                </div>
-                                <div class="reading-metric">
-                                    <span class="metric-name">Glucose:</span>
-                                    <span class="metric-val">94 mg/dL</span>
+                                <div class="reading-metrics">
+                                    <div class="reading-metric">
+                                        <span class="metric-name">No recent readings available</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="reading-item">
-                            <div class="reading-header">
-                                <span class="reading-time">12:00 PM</span>
-                                <span class="reading-date">Today</span>
-                            </div>
-                            <div class="reading-metrics">
-                                <div class="reading-metric">
-                                    <span class="metric-name">HR:</span>
-                                    <span class="metric-val">72 bpm</span>
+                        <?php else: ?>
+                            <?php foreach ($recent_readings as $reading): ?>
+                                <div class="reading-item">
+                                    <div class="reading-header">
+                                        <span class="reading-time"><?php echo $db->formatTime($reading['recorded_at']); ?></span>
+                                        <span class="reading-date"><?php echo $db->formatDate($reading['recorded_at']); ?></span>
+                                    </div>
+                                    <div class="reading-metrics">
+                                        <?php if ($reading['heart_rate']): ?>
+                                            <div class="reading-metric">
+                                                <span class="metric-name">HR:</span>
+                                                <span class="metric-val"><?php echo $reading['heart_rate']; ?> bpm</span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($reading['blood_oxygen']): ?>
+                                            <div class="reading-metric">
+                                                <span class="metric-name">SpO2:</span>
+                                                <span class="metric-val"><?php echo $reading['blood_oxygen']; ?>%</span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($reading['blood_glucose']): ?>
+                                            <div class="reading-metric">
+                                                <span class="metric-name">Glucose:</span>
+                                                <span class="metric-val"><?php echo $reading['blood_glucose']; ?> mg/dL</span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                          
-                                <div class="reading-metric">
-                                    <span class="metric-name">SpO2:</span>
-                                    <span class="metric-val">97%</span>
-                                </div>
-                                <div class="reading-metric">
-                                    <span class="metric-name">Glucose:</span>
-                                    <span class="metric-val">95 mg/dL</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="reading-item">
-                            <div class="reading-header">
-                                <span class="reading-time">9:30 AM</span>
-                                <span class="reading-date">Today</span>
-                            </div>
-                            <div class="reading-metrics">
-                                <div class="reading-metric">
-                                    <span class="metric-name">HR:</span>
-                                    <span class="metric-val">78 bpm</span>
-                                </div>
-                             
-                                <div class="reading-metric">
-                                    <span class="metric-name">SpO2:</span>
-                                    <span class="metric-val">98%</span>
-                                </div>
-                                <div class="reading-metric">
-                                    <span class="metric-name">Glucose:</span>
-                                    <span class="metric-val">97 mg/dL</span>
-                                </div>
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

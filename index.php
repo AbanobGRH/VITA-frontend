@@ -1,3 +1,41 @@
+<?php
+/**
+ * VITA Health Platform - Dashboard
+ */
+
+require_once 'includes/db_functions.php';
+
+// Get current user and data
+$user_id = getCurrentUserId();
+$user = getCurrentUser();
+$db = VitaDB::getInstance();
+
+// Get dashboard data
+$latest_metrics = $db->getLatestHealthMetrics($user_id);
+$recent_alerts = $db->getRecentAlerts($user_id, 5);
+$devices = $db->getUserDevices($user_id);
+$current_location = $db->getCurrentLocation($user_id);
+
+// Default values if no data
+$heart_rate = $latest_metrics['heart_rate'] ?? 72;
+$blood_oxygen = $latest_metrics['blood_oxygen'] ?? 98;
+$blood_glucose = $latest_metrics['blood_glucose'] ?? 95;
+
+// Device status
+$device_status = 'Disconnected';
+$battery_level = 0;
+if (!empty($devices)) {
+    $main_device = $devices[0];
+    $device_status = $main_device['status'];
+    $battery_level = $main_device['battery_level'] ?? 0;
+}
+
+// Location info
+$location_info = 'Unknown';
+if ($current_location) {
+    $location_info = $current_location['location_type'] . ' • ' . $db->timeAgo($current_location['recorded_at']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +44,18 @@
     <title>VITA - Smart Elderly Care Platform</title>
     <meta name="description" content="VITA: Innovative health-tech solution for elderly care with real-time monitoring, AI alerts, and family connectivity.">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="preconnect" href=xt">VITA</span>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img style="width: 40px;" src="/assets/justlogo.png">
+                    <span class="logo-text">VITA</span>
                 </div>
                 <button class="sidebar-close" id="sidebarClose">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -16,33 +65,33 @@
                 </button>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">
+                <li><a href="index.php" class="nav-link active">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
                     </svg>
                     Dashboard
                 </a></li>
-                <li><a href="health-metrics.html" class="nav-link">
+                <li><a href="health-metrics.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>
                     Health Metrics
                 </a></li>
-                <li><a href="location.html" class="nav-link">
+                <li><a href="location.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
                     Location
                 </a></li>
-                <li><a href="medication.html" class="nav-link">
+                <li><a href="medication.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4.5 16.5c-1.5 1.5-1.5 3.5 0 5s3.5 1.5 5 0l12-12c1.5-1.5 1.5-3.5 0-5s-3.5-1.5-5 0l-12 12z"></path>
                         <path d="M15 7l3 3"></path>
                     </svg>
                     Medication
                 </a></li>
-                <li><a href="alerts.html" class="nav-link">
+                <li><a href="alerts.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                         <line x1="12" y1="9" x2="12" y2="13"></line>
@@ -50,14 +99,14 @@
                     </svg>
                     Alerts
                 </a></li>
-                <li><a href="profile.html" class="nav-link">
+                <li><a href="profile.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     Profile
                 </a></li>
-                <li><a href="device-setup.html" class="nav-link">
+                <li><a href="device-setup.php" class="nav-link">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"></circle>
                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -77,7 +126,8 @@
                 </svg>
             </button>
             <div class="mobile-logo">
-                <img style="width: 40px; "src="/assets/justlogo.png">                <span class="logo-text">VITA</span>
+                <img style="width: 40px;" src="/assets/justlogo.png">
+                <span class="logo-text">VITA</span>
             </div>
         </header>
 
@@ -85,7 +135,7 @@
         <main class="main-content">
             <div class="page-header">
                 <h1>Health Dashboard</h1>
-                <p>Real-time monitoring for Margaret Thompson</p>
+                <p>Real-time monitoring for <?php echo htmlspecialchars($user['full_name'] ?? 'User'); ?></p>
             </div>
 
             <!-- Vital Signs Cards -->
@@ -94,7 +144,7 @@
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Heart Rate</p>
-                            <p class="metric-value">72 <span class="metric-unit">bpm</span></p>
+                            <p class="metric-value"><?php echo $heart_rate; ?> <span class="metric-unit">bpm</span></p>
                             <p class="metric-status normal">● Normal</p>
                         </div>
                         <div class="metric-icon heart">
@@ -105,12 +155,11 @@
                     </div>
                 </div>
 
- 
                 <div class="metric-card">
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Blood Oxygen (SpO2)</p>
-                            <p class="metric-value">98 <span class="metric-unit">%</span></p>
+                            <p class="metric-value"><?php echo $blood_oxygen; ?> <span class="metric-unit">%</span></p>
                             <p class="metric-status normal">● Normal</p>
                         </div>
                         <div class="metric-icon oxygen">
@@ -129,7 +178,7 @@
                     <div class="metric-content">
                         <div class="metric-info">
                             <p class="metric-label">Blood Glucose</p>
-                            <p class="metric-value">95 <span class="metric-unit">mg/dL</span></p>
+                            <p class="metric-value"><?php echo $blood_glucose; ?> <span class="metric-unit">mg/dL</span></p>
                             <p class="metric-status normal">● Normal <span class="beta-tag">BETA</span></p>
                         </div>
                         <div class="metric-icon glucose">
@@ -158,14 +207,25 @@
                         </svg>
                     </div>
                     <div class="alerts-list">
-                    
-                        <div class="alert-item low">
-                            <div class="alert-indicator"></div>
-                            <div class="alert-content">
-                                <p class="alert-message">Heart rate slightly elevated during morning walk</p>
-                                <p class="alert-time">10:15 AM</p>
+                        <?php if (empty($recent_alerts)): ?>
+                            <div class="alert-item low">
+                                <div class="alert-indicator"></div>
+                                <div class="alert-content">
+                                    <p class="alert-message">No recent alerts</p>
+                                    <p class="alert-time">All systems normal</p>
+                                </div>
                             </div>
-                        </div>
+                        <?php else: ?>
+                            <?php foreach ($recent_alerts as $alert): ?>
+                                <div class="alert-item <?php echo strtolower($alert['priority']); ?>">
+                                    <div class="alert-indicator"></div>
+                                    <div class="alert-content">
+                                        <p class="alert-message"><?php echo htmlspecialchars($alert['message']); ?></p>
+                                        <p class="alert-time"><?php echo $db->timeAgo($alert['alert_time']); ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -173,9 +233,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h2>Device Status</h2>
-                        <div class="status-indicator online">
+                        <div class="status-indicator <?php echo $device_status === 'Connected' ? 'online' : 'offline'; ?>">
                             <div class="status-dot"></div>
-                            <span>Online</span>
+                            <span><?php echo $device_status; ?></span>
                         </div>
                     </div>
                     <div class="device-status-list">
@@ -189,9 +249,9 @@
                             </div>
                             <div class="battery-indicator">
                                 <div class="battery-bar">
-                                    <div class="battery-fill" style="width: 87%"></div>
+                                    <div class="battery-fill" style="width: <?php echo $battery_level; ?>%"></div>
                                 </div>
-                                <span>87%</span>
+                                <span><?php echo $battery_level; ?>%</span>
                             </div>
                         </div>
                         <div class="device-item">
@@ -204,7 +264,7 @@
                                 </svg>
                                 <span>Connection</span>
                             </div>
-                            <span class="connection-status">Strong</span>
+                            <span class="connection-status"><?php echo $device_status === 'Connected' ? 'Strong' : 'Disconnected'; ?></span>
                         </div>
                         <div class="device-item">
                             <div class="device-info">
@@ -214,7 +274,7 @@
                                 </svg>
                                 <span>Last Location</span>
                             </div>
-                            <span class="location-info">Home • 2 min ago</span>
+                            <span class="location-info"><?php echo htmlspecialchars($location_info); ?></span>
                         </div>
                     </div>
                 </div>
