@@ -20,6 +20,7 @@ $current_location = $db->getCurrentLocation($user_id);
 $heart_rate = $latest_metrics['heart_rate'] ?? 72;
 $blood_oxygen = $latest_metrics['blood_oxygen'] ?? 98;
 $blood_glucose = $latest_metrics['blood_glucose'] ?? 95;
+$cholesterol = $latest_metrics['cholesterol'] ?? 180;
 
 // Device status
 $device_status = 'Disconnected';
@@ -169,6 +170,21 @@ if ($current_location) {
                                 <path d="M12 19a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path>
                                 <path d="M7 13a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path>
                                 <path d="M17 13a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-content">
+                        <div class="metric-info">
+                            <p class="metric-label">Cholesterol</p>
+                            <p class="metric-value"><?php echo $cholesterol; ?> <span class="metric-unit">mg/dL</span></p>
+                            <p class="metric-status normal">● Normal</p>
+                        </div>
+                        <div class="metric-icon cholesterol">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                             </svg>
                         </div>
                     </div>
